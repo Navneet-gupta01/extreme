@@ -157,7 +157,13 @@ defmodule Extreme do
   take a look at their [documentation](http://docs.geteventstore.com) or for common use cases
   you can check `test/extreme_test.exs` file.
   """
-  def execute(server, message), do: GenServer.call(server, {:execute, message})
+  def execute(server, message),
+    do:
+      GenServer.call(
+        server,
+        {:execute, message},
+        Application.get_env(:extreme, :call_timeout, 5000)
+      )
 
   @doc """
   Reads events specified in `read_events`, sends them to `subscriber`
